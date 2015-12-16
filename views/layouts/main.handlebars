@@ -6,37 +6,23 @@
 	<script src="client.js"> </script>
 
 	<div class=header> 
-	Online Database <br> 
-	Web Development <br>
+	Westlaw Query Cracker <br> 
+	Spot hidden problems with Westlaw terms and connectors queries <br>
 	Andrew Johnson	<br>
 	</div>
-<title> WebDevelopment Final Project</title>
+<title> Westlaw QueryCracker </title>
 	
 </head>
 
 <body>
-	<form id="addForm" name="Add Data">
-		
+	<form id="queryForm">
+		<h2> Paste in your Westlaw Query </h2>
 		<fieldset>
 			
 			Name: <br>
-			<input type='text' name='name' id='nameVal'>
+			<input type='text' name='query' id='queryVal'>
 			<br>
-			Reps: <br>
-			<input type='number' name='reps' id='repsVal'>
-			<br>
-			Weight: <br>
-			<input type='number' name='weight' id='weightVal'>
-			<br>
-			Date: <br>
-			<input type='date' name='date' id='dateVal'>
-			<br>
-			Lbs: <br>
-			<input type='radio' name='lbs' id="lbsYes" checked='checked'>Yes
-			<br>
-			<input type='radio' name='lbs' id="lbsNo">No
-			<br>
-			<input type='submit' value="Add Data" id="addSubmit">
+			<input type='submit' value="submitQuery" id="subButton">
 		</fieldset>
 	</form>
 	
