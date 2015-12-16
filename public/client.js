@@ -13,10 +13,11 @@ function buttonAssign()
 {
 	
 	var queryReq = new XMLHttpRequest();
-]
+
 	
 	document.getElementById('subButton').onclick = (function()
 	{
+		console.log("We are inside the button function now");
 		var query = document.getElementById('queryBox').value;
 				
 		var url = 'http://ec2-52-26-46-121.us-west-2.compute.amazonaws.com:2008/crunch' + '?search=' + query;
