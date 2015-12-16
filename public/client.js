@@ -28,7 +28,7 @@ function buttonAssign()
 			if(queryReq.status >= 200 && queryReq.status < 400)
 			{
 				var response = JSON.parse(queryReq.responseText);
-				document.getElementById{'resultBox').innerHTML = response.query;
+				document.getElementById('resultBox').innerHTML = response.query;
 				
 			}
 			else
