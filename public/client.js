@@ -39,12 +39,12 @@ function buttonAssign()
 		});
 						
 
-		}		
+	}		
 	
 		queryReq.send(null);
 		event.preventDefault();	
-	}
 }
+
 
 
 
