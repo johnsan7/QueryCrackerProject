@@ -20,9 +20,8 @@ function buttonAssign()
 		console.log("We are inside the button function now");
 		var query = document.getElementById('queryVal').value;
 		query = encodeURIComponent(query);
-		
-				//old 'http://ec2-52-26-46-121.us-west-2.compute.amazonaws.com:2008/crunch' 
-		var url = 'http://localhost:3000/crunch' + '?search=' + query;
+		 
+		var url = 'http://ec2-52-26-46-121.us-west-2.compute.amazonaws.com:2008/crunch' + '?search=' + query;
 
 		queryReq.open('GET', url, true);
 		queryReq.addEventListener('load', function()
