@@ -21,7 +21,7 @@ function buttonAssign()
 		var query = document.getElementById('queryVal').value;
 		query = encodeURIComponent(query);
 		 
-		var url = 'http://ec2-52-26-46-121.us-west-2.compute.amazonaws.com:2008/crunch' + '?search=' + query;
+		var url = 'http://ec2-52-26-46-121.us-west-2.compute.amazonaws.com:2011/crunch' + '?search=' + query;
 
 		queryReq.open('GET', url, true);
 		queryReq.addEventListener('load', function()
