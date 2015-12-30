@@ -18,9 +18,11 @@ function buttonAssign()
 	document.getElementById('subButton').onclick = (function()
 	{
 		console.log("We are inside the button function now");
-		var query = document.getElementById('queryBox').value;
-				
-		var url = 'http://ec2-52-26-46-121.us-west-2.compute.amazonaws.com:2008/crunch' + '?search=' + query;
+		var query = document.getElementById('queryVal').value;
+		query = encodeURIComponent(query);
+		
+				//old 'http://ec2-52-26-46-121.us-west-2.compute.amazonaws.com:2008/crunch' 
+		var url = 'http://localhost:3000/crunch' + '?search=' + query;
 
 		queryReq.open('GET', url, true);
 		queryReq.addEventListener('load', function()
@@ -28,8 +30,9 @@ function buttonAssign()
 			if(queryReq.status >= 200 && queryReq.status < 400)
 			{
 				var response = JSON.parse(queryReq.responseText);
-				document.getElementById('resultBox').innerHTML = response.query;
-				
+				//console.log("Here is the query returned", response.parenOut);
+				document.getElementById('resultBox').innerHTML = response.parenOut;
+				document.getElementById('stopWordBox').innerHTML = response.stopOut;
 			}
 			else
 			{
@@ -39,10 +42,12 @@ function buttonAssign()
 		});
 						
 
-	}		
-	
 		queryReq.send(null);
 		event.preventDefault();	
+		
+	});		
+	
+
 }
 
 
