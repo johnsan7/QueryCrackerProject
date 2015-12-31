@@ -42,7 +42,7 @@ function buttonAssign()
 				if(response.stopProb)
 				{
 					document.getElementById('stopWordBox').textContent = "You have at least one stop word in your query. The highlighted terms below are being ignored in your search and are doing nothing. Add a # before them to force Westlaw to search for them, or remove them";
-					document.getElementById('stopWordQueryBox')innerHTML = response.stopOut;
+					document.getElementById('stopWordQueryBox').innerHTML = response.stopOut;
 				}
 				else
 				{
