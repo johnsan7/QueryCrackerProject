@@ -17,7 +17,7 @@ function buttonAssign()
 	
 	document.getElementById('subButton').onclick = (function()
 	{
-		console.log("We are inside the button function now");
+		//console.log("We are inside the button function now");
 		var query = document.getElementById('queryVal').value;
 		query = encodeURIComponent(query);
 		 
@@ -32,7 +32,7 @@ function buttonAssign()
 				//console.log("Here is the query returned", response.parenOut);
 				if(response.parenProb)
 				{
-					console.log("paren true tripped on response");
+					//console.log("paren true tripped on response");
 					document.getElementById('resultBox').textContent = "You have a mismatched paren. The query is presented below with the mismatched parens highlighted";
 					document.getElementById('resultParenQuery').innerHTML = response.parenOut;
 				}
@@ -43,7 +43,7 @@ function buttonAssign()
 				}
 				if(response.stopProb)
 				{
-					console.log("Stop true tripped on response");
+					//console.log("Stop true tripped on response");
 					document.getElementById('stopWordBox').textContent = "You have at least one stop word in your query. The highlighted terms below are being ignored in your search and are doing nothing. Add a # before them to force Westlaw to search for them, or remove them";
 					document.getElementById('stopWordQueryBox').innerHTML = response.stopOut;
 				}

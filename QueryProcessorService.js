@@ -29,7 +29,7 @@ app.set('view engine', 'handlebars');
 app.set('port', 2011);
 
 
-
+var userCounter = 0; //This is just a primitive use counter for now
 
 
 //This just renders the main page, all other rendering is done on the client side. 
@@ -41,7 +41,7 @@ app.get('/',function(req,res,next){
 
 app.get('/crunch',function(req,res,next){
 
-	console.log("Getting to query function on server, game on  Wayne!");
+	//console.log("Getting to query function on server, game on  Wayne!");
 	var queryToProcess = req.query.search;
 	var openStack = [];
 	var closeStack = [];
@@ -218,7 +218,7 @@ app.get('/crunch',function(req,res,next){
 			if(tempFieldLetter.match(Exp) && queryToProcess[curTempFieldSearchIndex-1] == " ") //We have a field
 			{
 				letterCountField++;
-				console.log("Found a field! Letter count is: ", letterCountField, " startIndex is: ", L);
+				//console.log("Found a field! Letter count is: ", letterCountField, " startIndex is: ", L);
 				
 			}
 		}
@@ -256,10 +256,10 @@ app.get('/crunch',function(req,res,next){
 			var tempWord = termArray[n].toUpperCase();  //Gets current word in upper case to compare
 			if(tempWord == stopWords[p])
 			{
-				console.log("stop word found: ", stopWords[p]);
+				//console.log("stop word found: ", stopWords[p]);
 				if(termArray[n-1] != "<span class='stopWord'>")
 				{
-					console.log("Found common term");
+					//console.log("Found common term");
 					stopWordPresent = true;			//Sets the bool to indicate we have a problem
 					termArray.splice(n+1, 0, postStop);
 					termArray.splice(n, 0, preStop);
@@ -281,7 +281,7 @@ app.get('/crunch',function(req,res,next){
 	
 	
 	
-	console.log("Here is the term string: ", stopString);
+	//console.log("Here is the term string: ", stopString);
 	outObject.parenOut = parenString;
 	outObject.stopOut = stopString;
 	outObject.parenProb = parenPresent;
@@ -296,7 +296,11 @@ app.get('/crunch',function(req,res,next){
 	//console.log("Unmatched open paren count is: ", openStack.length);
 	//console.log("Unmatched close paren count is: ", closeStack.length);
 	
-  
+	userCounter++;
+	
+	console.log("Used, parenbool = ", outObject.parenProb, " stopBool = ", outObject.stopProb);
+	console.log("Paren query is: ", outObject.parenOut, "Stop Word query is: ", outObject.stopOut);
+	console.log("UserCounter is: ", userCounter);
 
 	res.send(JSON.stringify(outObject));
 });
