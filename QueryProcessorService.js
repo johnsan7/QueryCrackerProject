@@ -52,6 +52,9 @@ app.get('/crunch',function(req,res,next){
 	var openCount = 0;
 	var closeCount = 0;
 		
+	var parenPresent = false; //This and the next store whether an issue was found with parens etc. these are sent back for proper display of the html
+	var stopWordPresent = false;
+	
 	//looks through every letter in the string, if letter is an (, push a number on to a stack. If the letter is a ), pop a number off of the stack. 
 	//Number is not the index of the (, but the number of the (, later we iterate through and put <div id='looseParen'> </div> tags around each one left on our stack. 
 	//For each ) we pop  
@@ -93,6 +96,12 @@ app.get('/crunch',function(req,res,next){
 	//console.log("CloseStack is: ", closeStack);
 	
 	var parenString = queryToProcess;
+	
+	if(openStack.length >0 || closeStack.length >0) //If we have a paren problem, set our bool to indicate it
+	{
+		parenPresent = true;
+		
+	}
 	
 	while(openStack.length > 0)
 	{
@@ -251,6 +260,7 @@ app.get('/crunch',function(req,res,next){
 				if(termArray[n-1] != "<span class='stopWord'>")
 				{
 					console.log("Found common term");
+					stopWordPresent = true;			//Sets the bool to indicate we have a problem
 					termArray.splice(n+1, 0, postStop);
 					termArray.splice(n, 0, preStop);
 					n = 0;  						//This starts the search over
@@ -274,6 +284,8 @@ app.get('/crunch',function(req,res,next){
 	console.log("Here is the term string: ", stopString);
 	outObject.parenOut = parenString;
 	outObject.stopOut = stopString;
+	outObject.parenProb = parenPresent;
+	outObject.stopProb = stopWordPresent;
 	
 	//console.log(parenString);
 	

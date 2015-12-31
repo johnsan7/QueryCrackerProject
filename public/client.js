@@ -30,8 +30,26 @@ function buttonAssign()
 			{
 				var response = JSON.parse(queryReq.responseText);
 				//console.log("Here is the query returned", response.parenOut);
-				document.getElementById('resultBox').innerHTML = response.parenOut;
-				document.getElementById('stopWordBox').innerHTML = response.stopOut;
+				if(response.parenProb)
+				{
+					document.getElementById('resultBox').textContent = "You have a mismatched paren. The query is presented below with the mismatched parens highlighted";
+					document.getElementById('resultParenQuery').innerHTML = response.parenOut;
+				}
+				else
+				{
+					document.getElementById('resultBox').textContent = "You have no mis-matched parens";
+				}
+				if(response.stopProb)
+				{
+					document.getElementById('stopWordBox').textContent = "You have at least one stop word in your query. The highlighted terms below are being ignored in your search and are doing nothing. Add a # before them to force Westlaw to search for them, or remove them";
+					document.getElementById('stopWordQueryBox')innerHTML = response.stopOut;
+				}
+				else
+				{
+					document.getElementById('stopWordBox').textContent = "You have no ignored stop words in your query";
+				}
+				//document.getElementById('resultBox').innerHTML = response.parenOut;
+				//document.getElementById('stopWordBox').innerHTML = response.stopOut;
 			}
 			else
 			{
