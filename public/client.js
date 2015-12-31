@@ -39,6 +39,7 @@ function buttonAssign()
 				else
 				{
 					document.getElementById('resultBox').textContent = "You have no mis-matched parens";
+					document.getElementById('resultParenQuery').innerHTML = " ";
 				}
 				if(response.stopProb)
 				{
@@ -49,6 +50,7 @@ function buttonAssign()
 				else
 				{
 					document.getElementById('stopWordBox').textContent = "You have no ignored stop words in your query";
+					document.getElementById('stopWordQueryBox').innerHTML = " ";
 				}
 				//document.getElementById('resultBox').innerHTML = response.parenOut;
 				//document.getElementById('stopWordBox').innerHTML = response.stopOut;
