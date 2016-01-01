@@ -183,14 +183,20 @@ app.get('/crunch',function(req,res,next){
 	//If they have mistakenly added a field
 
 	var fieldParCount = 0;
-
+	var fieldStack = []; //Holds the paren number for parens that are confirmed to have fields preceeding them. 
+	
+	var fieldString = queryToProcess; //Gets query copy we can edit and add tags to.
+	
+	var preField = "<span class='foundField'>";
+	var postField = "</span>";
+	
 	//We go through the whole query, find ( and check for caps before it, if all
 	//caps, we flag it as a field with the ( number keyed to length of the field name
 	for(var L=0; L<queryToProcess.length; L++)
 	{
 		var Exp = /^[A-Z]+$/; //This is test if alpha and capital
+		var fieldBool = true; //This indicates if a field is found, starts out true. 
 		
-		var letterCountField = 0; //This records how many letters before the ( to highlight
 		if(queryToProcess[L] == '(' && L==0)
 		{
 			fieldParCount++; //If first item is a paren, we don't want to look before it or it is undefined, just increment
@@ -203,27 +209,80 @@ app.get('/crunch',function(req,res,next){
 		{
 			var tempFieldLetter = queryToProcess[L-1];
 			var curTempFieldSearchIndex = L-1;
-
+			fieldParCount++;
 			
 
 			
-			while(curTempFieldSearchIndex > 0 && tempFieldLetter.match(Exp) && queryToProcess[curTempFieldSearchIndex-1] != " ")
+			while(curTempFieldSearchIndex > 0 && queryToProcess[curTempFieldSearchIndex-1] != " ")
 			{
+				if(!tempFieldLetter.match(Exp))
+				{
+					fieldBool = false; //If we get a letter before the ( that is not a capital letter, it is not a field
+				}
 				curTempFieldSearchIndex--;
 				tempFieldLetter = queryToProcess[curTempFieldSearchIndex];
-				letterCountField++;
 				
 			} //This while exits when we have found a space, non capital letter, or the start of the query. If tempFieldLetter is a " ", then we have a field.
 			
-			if(tempFieldLetter.match(Exp) && queryToProcess[curTempFieldSearchIndex-1] == " ") //We have a field
+			if(fieldBool)
 			{
-				letterCountField++;
-				//console.log("Found a field! Letter count is: ", letterCountField, " startIndex is: ", L);
-				
+				//console.log("Field found!");
+				fieldStack.push(fieldParCount);  //Save the number of the paren with the field to the stack. 
 			}
+
 		}
 	  
 	}
+	
+	//Now to draw the tags around the fields
+	var fieldParenCounter = 0;  //Tells us what ( we are on in the string
+	var fieldOutBool = false;  //Indicates to client if there is a field out query to print
+	if(fieldStack.length >0)
+	{
+		fieldOutBool = true;  //If there are any fields, set indicator to true
+	}
+	for(var q=0; q<fieldString.length; q++)
+	{  
+//console.log("The big field loop is endless if this repeats");
+//console.log("Field stack is: ", fieldStack);
+//console.log("Field stack at the end is: ", fieldStack[fieldStack.length-1]);
+		var Exp = /^[A-Z]+$/; //This is test if alpha and capital
+		var offsetCounter = 0; //This tells us how many letters to offset our html tag to get the whole field. 
+
+		var startFieldIndex = 0;
+		if(fieldString[q] == '(')
+		{
+			//console.log("got into field detecting found (")
+			fieldParenCounter++;
+			//console.log("In the if, the fieldParenCounter is: ", fieldParenCounter);
+			//console.log("In the if, the item at the end of the stack is: ", fieldStack[fieldStack.length-1]);
+			if(fieldParenCounter == fieldStack[fieldStack.length-1]) //fieldStack[fieldStack.length-1]);  //This triggers when we get a paren with a found field. 
+			{
+			//console.log("Found ( that matches our stack");
+				startFieldIndex = q-1;
+				//console.log("Before while loop which will not trigger, letter tested was: ", fieldString[startFieldIndex]);//, "Stack paren indicated is: ". fieldStack[fieldStack.length]);
+				while(startFieldIndex>=0 && fieldString[startFieldIndex].match(Exp))
+				{
+					//console.log("While tripped");
+					offsetCounter++;
+					startFieldIndex--;
+				}//When this is no longer true, we have offsetCounter which tells us how many indices to offset. 
+			//console.log("Got out of while, offsetCounter is", offsetCounter);
+			fieldStack.pop(); //We get rid of the paren we are marking from our stack so we do not repeat it. 
+
+			var newFieldString = fieldString.slice(0,q-offsetCounter) + preField + fieldString.slice(q-offsetCounter, q) + postField + fieldString.slice(q);	
+						console.log("Got past new string");
+			fieldString = newFieldString;
+			q=0;  //Start the loop over, since we added to the text of the string
+			//console.log("End of loop, fieldString is: ", fieldString, " fieldStack after popping is: ", fieldStack);
+			fieldParenCounter = 0; //After we have found a match for our stack, we pop the marked paren, and start the whole loop over. 
+			}
+			
+		}
+	}
+	
+	//console.log("Field stack is: ", fieldStack);
+	//console.log("Field String is: ", fieldString);
 	
 	//Above is work in progress, moving on to query space fixing and then pulling it apart to test for words.
 	
@@ -279,9 +338,37 @@ app.get('/crunch',function(req,res,next){
 
 	};
 	
+	//This builds an array out of the query and tests if any of the FRCP abbreviations for FRCP are used unnecessarily
+/*	
+	var frcpTestString = queryToProcess;
+	var frcpTermList = frcpTestString.trim().split(/\ +/);
+	var abbList = ['F.R.C.P.', 'F.R.CIV.P.', 'F.R.CIV.PRO.', 'FED.R.CIV.P.', 'FED.R.CIV.PRO.', 'FED.R.CIV.PROC.', 'FED.RULE', 'CIV.PROC'];
+	var frcpOutList = " ";
+	var preFRCP = "<span class='frcpWord'>";
+	var postFRCP = "</span>";
 	
+	for(var r=0; r<frcpTermList.length; r++)
+	{
+		for(var s=0; s<abbList.length; r++)
+		{
+			if(frcpTermList[r] == abbList[s])
+			{
+			
+			}
+			else
+			{
+				frcpOutList = frcpOutList + 
+			}
+		}
+		
+	}
+	//Now we have a list of indices of our Term List that are FRCP matching terms. We need to build a new query string with highlighted terms
+	
+*/
 	
 	//console.log("Here is the term string: ", stopString);
+	outObject.fieldOut = fieldString;
+	outObject.fieldProb = fieldOutBool;
 	outObject.parenOut = parenString;
 	outObject.stopOut = stopString;
 	outObject.parenProb = parenPresent;

@@ -21,7 +21,9 @@ function buttonAssign()
 		var query = document.getElementById('queryVal').value;
 		query = encodeURIComponent(query);
 		 
-		var url = 'http://ec2-52-26-46-121.us-west-2.compute.amazonaws.com:2011/crunch' + '?search=' + query;
+		 //Correct url 'http://localhost:3000/crunch'
+		 
+		var url = 'http://ec2-52-26-46-121.us-west-2.compute.amazonaws.com:2011/crunch'  + '?search=' + query;
 
 		queryReq.open('GET', url, true);
 		queryReq.addEventListener('load', function()
@@ -51,6 +53,16 @@ function buttonAssign()
 				{
 					document.getElementById('stopWordBox').textContent = "You have no ignored stop words in your query";
 					document.getElementById('stopWordQueryBox').innerHTML = " ";
+				}
+				if(response.fieldProb)
+				{
+					document.getElementById('fieldWordBox').textContent = "The highlighted terms below are being treated as fields by Westlaw. If you have a term before a (, Westlaw will sometimes mistakenly treat the term as a field. You should move the offending term behind the ), unless you meant to use it as a field";
+					document.getElementById('fieldQueryBox').innerHTML = response.fieldOut;
+				}
+				else
+				{
+					document.getElementById('fieldWordBox').textContent = "Your Query contains no fields";
+					document.getElementById('fieldQueryBox').innerHTML = " ";
 				}
 				//document.getElementById('resultBox').innerHTML = response.parenOut;
 				//document.getElementById('stopWordBox').innerHTML = response.stopOut;
