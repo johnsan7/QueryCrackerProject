@@ -1,24 +1,24 @@
 #queryVal{
-	width: 100%;
+	width: 70%;
 	height: 10em;
 	
 }
 
 .probPar{
-	background-color: green;
+	background-color: #ffd480;
 	color: red;
 
 }
 
 #explanationBox{
 	font-size: 2em;
-	
+    text-align: center;	
 }
 
 .stopWord{
-	background-color:green;
-	color: red;
-	
+	background-color:#ffd480;
+	color: red;	
+    text-align: center;	
 }
 
 #queryBox{
@@ -27,7 +27,45 @@
 }
 
 .foundField{
-	background-color: green;
+	background-color: #ffd480;
 	color: red;
 
+}
+
+.header{
+    background-color: #4F587F;
+    color: white;
+    height: auto;
+    /*padding:0.4em;*/
+    width:100%;
+    line-height:1.7em;
+    font-family:'Helvetica Neue';
+    font-size:1.3em;
+    /*vertical-align:top;*/
+    margin:0;
+    display:block;
+    text-align: center;	
+}
+
+.contentArea{
+    background-color:#f5fbfd;
+    height:100%;
+    display:block;
+    left:0;
+    top:0;
+    width:100%;
+   /* vertical-align:top;*/
+    font-family:'Helvetica Neue';
+    text-align: center;	
+}
+
+body, html{
+    margin:0;
+    padding:0;
+    font-family:'Helvetica Neue';
+}
+
+p{
+    margin:0;
+    padding:0;;
 }

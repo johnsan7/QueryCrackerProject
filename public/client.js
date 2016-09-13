@@ -15,7 +15,7 @@ function buttonAssign()
 	var queryReq = new XMLHttpRequest();
 
 	
-	document.getElementById('subButton').onclick = (function()
+	document.getElementById('subButton').onclick = (function(event)
 	{
 		//console.log("We are inside the button function now");
 		var query = document.getElementById('queryVal').value;
@@ -23,7 +23,8 @@ function buttonAssign()
 		 
 		 //Correct url 'http://localhost:3000/crunch'
 		 
-		var url = 'http://ec2-52-26-46-121.us-west-2.compute.amazonaws.com:2011/crunch'  + '?search=' + query;
+		var url = '../crunch'  + '?search=' + query;
+		//var url = 'http://ec2-52-26-46-121.us-west-2.compute.amazonaws.com:2011/crunch'  + '?search=' + query;
 
 		queryReq.open('GET', url, true);
 		queryReq.addEventListener('load', function()
