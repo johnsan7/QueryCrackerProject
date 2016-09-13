@@ -16,6 +16,23 @@ var handlebars = require('express-handlebars').create({defaultLayout:'main'});
 var bodyParser = require('body-parser');
 var session = require('express-session');
 
+//This is to get the connecting up for storage in database
+var requestIp = require('request-ip');
+
+//This is to get our datetime in the right format
+var dateTime = require('node-datetime');
+
+
+
+//Create a mySql pool for dbase access 
+var mysql = require('mysql');
+
+var connection = mysql.createConnection({
+  host  : 'localhost',
+  user  : 'yourusernamehere',
+  password: 'yourpasswordhere',
+  database: 'yourdatabasenamehere'
+});
 
 
 app.use(bodyParser.urlencoded({ extended: false}));
@@ -41,8 +58,26 @@ app.get('/',function(req,res,next){
 
 app.get('/crunch',function(req,res,next){
 
-	//console.log("Getting to query function on server, game on  Wayne!");
+	//We take in the query sent
 	var queryToProcess = req.query.search;
+
+	//We get our ip address of the connection
+	var clientIp = requestIp.getClientIp(req);
+	
+	//We get the datetime to enter into the database
+	var dt = dateTime.create();
+	
+	var formatted = dt.format('Y-m-d H:M:S');
+	console.log("Formatted datetime:", formatted);
+ 
+	//Now we connect our database
+	connection.connect();
+	//Save connection information and query to database
+	connection.query("INSERT INTO queryUsers (`query`, `dateRequested`, `ip`) VALUES (?,?,?)", [queryToProcess.toString(), formatted, clientIp]);
+		
+	//Then we disconnect our database connection
+	connection.end();
+
 	var openStack = [];
 	var closeStack = [];
 	
