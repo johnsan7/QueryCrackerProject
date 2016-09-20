@@ -27,11 +27,12 @@ var dateTime = require('node-datetime');
 //Create a mySql pool for dbase access 
 var mysql = require('mysql');
 
-var connection = mysql.createConnection({
+var pool = mysql.createPool({
+  connectionLimit: 10,
   host  : 'localhost',
-  user  : 'yourusernamehere',
-  password: 'yourpasswordhere',
-  database: 'yourdatabasenamehere'
+  user  : 'insertyouruser',
+  password: 'insertyourpassword',
+  database: 'insertyourdatabase'
 });
 
 
@@ -70,13 +71,17 @@ app.get('/crunch',function(req,res,next){
 	var formatted = dt.format('Y-m-d H:M:S');
 	console.log("Formatted datetime:", formatted);
  
-	//Now we connect our database
-	connection.connect();
-	//Save connection information and query to database
-	connection.query("INSERT INTO queryUsers (`query`, `dateRequested`, `ip`) VALUES (?,?,?)", [queryToProcess.toString(), formatted, clientIp]);
+	//Now we connect our database Save connection information and query to database
+	pool.getConnection(function(err, connection){
+		connection.query("INSERT INTO queryUsers (`query`, `dateRequested`, `ip`) VALUES (?,?,?)", [queryToProcess.toString(), formatted, clientIp]);
 		
-	//Then we disconnect our database connection
-	connection.end();
+		//Then we disconnect our database connection
+		connection.release();
+	});
+
+	
+		
+
 
 	var openStack = [];
 	var closeStack = [];
