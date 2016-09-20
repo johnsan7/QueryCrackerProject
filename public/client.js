@@ -7,10 +7,17 @@
 
 document.addEventListener('DOMContentLoaded', buttonAssign);
 
+var sampleQueryString = "((breach! /2 contract!) (inten! /2 inflict! /2 emotional /2 distress) /p (although /2 happy) (while /2 incarcerat!) (out /2 time))) ((therefore however /2 ignor!) /s return! /5 plaintiff defendant) /p county muni! CITY(from /2 far /2 away))";
 
 //Sets up form submit button
 function buttonAssign()
 {
+	
+	document.getElementById('loadSampleQuery').onclick = (function(event)
+	{
+		document.getElementById('queryVal').value = sampleQueryString;
+		
+	});
 	
 	var queryReq = new XMLHttpRequest();
 
