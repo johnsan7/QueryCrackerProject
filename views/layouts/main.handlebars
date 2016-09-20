@@ -18,6 +18,18 @@
             Andrew Johnson<br></p>
         </div>
 
+		<div id="directionBox">
+		<br>
+			This web-page is designed to test your Westlaw query for hidden problems. Three problems are detected: unmatched parens, stop words that are ignored, and 
+			(sometimes non-existent) fields being unintentionally searched. <br>
+			When you paste in your query, you will get a report showing you any unmatched parenthesis. If you used any common terms that Westlaw will silently ignore, you will 
+			get a report. You will also get a report of any fields you are searching, in case you unintentionally used a field name before a (, and Westlaw
+			converted your search to be searching that field. The parenthesis issue will cause the query not to run. The latter two issues will still allow the query to run, 
+			but your search will not be searching for what you expect unless you correct these two issues. If you would like a test query, you can click the load test query button
+			below to have a query populated that has all three issues present. <br>
+			<br>
+			
+			<button id='loadSampleQuery' type='button'>Load Sample Query</button>
     
         <form id="queryForm">
             <h2> Paste in your Westlaw Query </h2>
